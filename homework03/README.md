@@ -55,7 +55,10 @@ Make sure you have docker installed before starting. We are mounting the data in
 
     If you would like to run the pytest for gcd_algorithm.py type
 3. `docker run --rm -v $PWD:/Meteorite_Landings_2024013.csv rheasamuel/ml_data_reader:1.0 pytest /code/test_gcd_algorithm.py`
+### Diagram Results
+![image](https://github.com/rheasamuel12/coe332-rheasamuel/assets/143050090/4d498d9d-ce9a-4f8e-aef0-d59d2a27c39b)
 
+This diagram displays the sequence diagram of the components found within the project. The main components found are the User, VM, Docker Container, and Python files. In the diagram, the text explains how each component relate to one another.
 ### Sample Code
 ```
   for item in a_list_of_dicts: 
