@@ -45,7 +45,8 @@ Make sure you have docker installed before starting. We are mounting the data in
     If you would like to run the pytest for ml_data_reader.py type
 2. `docker run --rm -v $(pwd):/app rheasamuel/iss_tracker:1.0 pytest /code/test_iss_tracker.py`
 
-    If you would like to display the DEBUG messages 
+    If you would like to display the DEBUG messages
+   
 3.`docker run --rm \
            -v $(pwd):/app \
            rheasamuel/iss_tracker:1.0 \
