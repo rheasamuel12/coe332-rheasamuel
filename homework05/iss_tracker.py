@@ -20,6 +20,7 @@ def print_data():
         None (uses query parameters):
             limit (int): Maximum number of items to return
             offset (int): Index to start returning items from
+
     Returns:
         result (list of dicts): Set of state vector data
     """
@@ -27,7 +28,7 @@ def print_data():
 
     limit = request.args.get('limit', 0, type=int)
     offset = request.args.get('offset', 0, type=int)
-
+    
 
     if limit != 0:
         try:
@@ -35,7 +36,7 @@ def print_data():
             offset = int(offset)
         except ValueError:
             return "Invalid input, must be integer"
-
+        
         logging.debug("Debug attempt, should be true: %s", limit != None) 
         logging.debug("Debug attempt, should be true: %s", offset != None) 
 
@@ -54,8 +55,10 @@ def print_data():
 def print_epoch(epoch):
     """
     Prints the state vector data corresponding to a given epoch.
+
     Args:
         epoch (str): The epoch timestamp to retrieve data for
+
     Returns:
         x (dict): The state vector data for the given epoch
     """
@@ -68,8 +71,10 @@ def print_epoch(epoch):
 def inst_speed(epoch):
     """
     Calculates and returns the instantaneous speed for a given epoch.
+
     Args:
         epoch (str): The epoch timestamp to calculate speed for
+
     Returns:
         speed (float): The calculated instantaneous speed
     """
@@ -89,10 +94,11 @@ def inst_speed(epoch):
 def closest_speed():
     """
     Calculates and returns the closest speed to the current time.
+
     Returns:
         speed (float): The calculated speed closest to the current time
     """
-
+    
     timestamps = [datetime.strptime(i['EPOCH'], "%Y-%jT%H:%M:%S.%fZ") for i in data['ndm']['oem']['body']['segment']['data']['stateVector']]
     time_differences = [abs(x - datetime.now()) for x in timestamps]
     closest_index = time_differences.index(min(time_differences))
@@ -104,7 +110,13 @@ def closest_speed():
     z_dot = float(closest_timestamp_data['Z_DOT']['#text'])
     speed = math.sqrt(x_dot**2 + y_dot**2 + z_dot**2)
 
-    return str(speed)
+    result = {
+        "closest_timestamp_data": closest_timestamp_data,
+        "speed": speed
+    }
+
+    return result
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
+
