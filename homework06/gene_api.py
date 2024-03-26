@@ -139,9 +139,9 @@ def gene_id(hgnc_id):
         "gencc": gene_data.get('gencc', '')
     }
     
-    response_json = json.dumps(gene_info, indent=4)
+    res = json.dumps(gene_info, indent=4)
     
-    return response_json, 200, {'Content-Type': 'application/json'}
+    return res, 200, {'Content-Type': 'application/json'}
 
 
 if __name__ == '__main__':
