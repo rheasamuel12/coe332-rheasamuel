@@ -80,7 +80,7 @@ def gene_id(hgnc_id):
     if gene_data is None:
         return jsonify({"error": "Gene ID not found"}), 404
 
-    gene_data = json.loads(gene_data.decode('utf-8'))
+    gene_data = json.loads(gene_data)
 
     gene_info = {
         "hgnc_id": gene_data.get('hgnc_id', ''),
@@ -95,8 +95,8 @@ def gene_id(hgnc_id):
         "alias_name": gene_data.get('alias_name', ''),
         "prev_symbol": gene_data.get('prev_symbol', ''),
         "prev_name": gene_data.get('prev_name', ''),
-        "gene_group": ", ".join(gene_data.get('gene_group', '')),  
-        "gene_group_id": ", ".join(str(x) for x in gene_data.get('gene_group_id', '')),  
+        "gene_group": gene_data.get('gene_group', ''),
+        "gene_group_id": gene_data.get('gene_group_id', ''),
         "date_approved_reserved": gene_data.get('date_approved_reserved', ''),
         "date_symbol_changed": gene_data.get('date_symbol_changed', ''),
         "date_name_changed": gene_data.get('date_name_changed', ''),
@@ -106,15 +106,15 @@ def gene_id(hgnc_id):
         "vega_id": gene_data.get('vega_id', ''),
         "ucsc_id": gene_data.get('ucsc_id', ''),
         "ena": gene_data.get('ena', ''),
-        "refseq_accession": ", ".join(gene_data.get('refseq_accession', '')),
-        "ccds_id": ", ".join(gene_data.get('ccds_id', '')),  
-        "uniprot_ids": ", ".join(gene_data.get('uniprot_ids', '')),  
-        "pubmed_id": ", ".join(str(x) for x in gene_data.get('pubmed_id', '')),  
-        "mgd_id": ", ".join(gene_data.get('mgd_id', '')),  
-        "rgd_id": ", ".join(gene_data.get('rgd_id', '')),  
+        "refseq_accession": gene_data.get('refseq_accession', ''),
+        "ccds_id": gene_data.get('ccds_id', ''),
+        "uniprot_ids": gene_data.get('uniprot_ids', ''),
+        "pubmed_id": gene_data.get('pubmed_id', ''),
+        "mgd_id": gene_data.get('mgd_id', ''),
+        "rgd_id": gene_data.get('rgd_id', ''),
         "lsdb": gene_data.get('lsdb', ''),
         "cosmic": gene_data.get('cosmic', ''),
-        "omim_id": ", ".join(gene_data.get('omim_id', '')), 
+        "omim_id": gene_data.get('omim_id', ''),
         "mirbase": gene_data.get('mirbase', ''),
         "homeodb": gene_data.get('homeodb', ''),
         "snornabase": gene_data.get('snornabase', ''),
@@ -135,14 +135,13 @@ def gene_id(hgnc_id):
         "lncipedia": gene_data.get('lncipedia', ''),
         "gtrnadb": gene_data.get('gtrnadb', ''),
         "agr": gene_data.get('agr', ''),
-        "mane_select": ", ".join(gene_data.get('mane_select', '')),  
+        "mane_select": gene_data.get('mane_select', ''),
         "gencc": gene_data.get('gencc', '')
     }
     
-    res = json.dumps(gene_info, indent=4)
+    response_json = json.dumps(gene_info, indent=4)
     
-    return res, 200, {'Content-Type': 'application/json'}
-
+    return response_json, 200, {'Content-Type': 'application/json'}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug = True)
