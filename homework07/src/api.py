@@ -4,7 +4,7 @@ import redis
 from jobs import add_job, get_job_by_id, jdb
 import json
 
-#Used ChatGPT to fix errors, fix formatting, and understand Redis more
+#Used ChatGPT to fix errors, fix formatting, and understand Redis and Jobs more
 
 app = Flask(__name__)
 rd = redis.Redis(host='redis-db', port=6379, db=0)
