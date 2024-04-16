@@ -2,7 +2,7 @@
 ### Descripion
 The following files read through the HGNC data and inject it into a Redis database through a Flask interface while also including job functionaily. This dataset provides comprehensive information about various human genes.
 
-Here are somee examples:
+Here are some examples:
 
 hgnc_id: The unique identifier assigned by HGNC to each gene.
 symbol: The gene symbol, often used as an abbreviated representation.
