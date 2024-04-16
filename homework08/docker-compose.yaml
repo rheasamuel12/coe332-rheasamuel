@@ -1,0 +1,56 @@
+version: "3"
+
+services:
+  redis-db:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data:/data
+    user: "1000:1000"  
+    command: ["--save", "1", "1"]
+
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - redis-db
+    image: rheasamuel/ml_flask_app:1.0
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./config.yaml:/config.yaml
+    environment:
+      - REDIS_IP=redis-db
+      - LOG_LEVEL=WARNING  
+    entrypoint: ["python", "api.py"]  
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - redis-db
+    image: rheasamuel/ml_flask_worker:1.0
+    volumes:
+      - ./src/worker.py:/app/worker.py  
+    environment:
+      - REDIS_IP=redis-db
+      - LOG_LEVEL=WARNING  
+    entrypoint: ["python", "worker.py"]  
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - redis-db
+    image: rheasamuel/ml_flask_app:1.0  
+    volumes:
+      - ./config.yaml:/config.yaml
+    environment:
+      - REDIS_IP=redis-db
+      - FLASK_ENV=test  
+    command: ["pytest"]
+
