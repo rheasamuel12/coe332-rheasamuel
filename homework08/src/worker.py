@@ -1,14 +1,3 @@
-import json
-from hotqueue import HotQueue
-import redis
-import os
-from jobs import get_job_by_id, update_job_status, q, rd, results
-
-_redis_ip = os.environ.get('REDIS_IP', 'redis-db')
-rd = redis.Redis(host=_redis_ip, port=6379, db=0)
-q = HotQueue("queue", host=_redis_ip, port=6379, db=1)
-results = redis.Redis(host=_redis_ip, port=6379, db=3)
-
 @q.worker
 def do_work(jobid):
     job = get_job_by_id(jobid)
@@ -48,7 +37,7 @@ def do_work(jobid):
         
         # Create the result dictionary with only the location
         result = {
-            "Most Common Location found in HGNC_ID parameters given": most_common_location
+            "location": most_common_location
         }
         
         # Store only the location in results
@@ -58,5 +47,4 @@ def do_work(jobid):
 
 if __name__ == '__main__':
     do_work()
-
 
