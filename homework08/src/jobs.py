@@ -5,6 +5,8 @@ from hotqueue import HotQueue
 import os
 import logging
 
+#Used ChatGPT to fix errors and understand more
+
 _redis_ip = os.environ.get('REDIS_IP', 'redis-db')
 _redis_port = '6379'
 
@@ -79,3 +81,5 @@ def get_result_by_id(jobid):
     else:
         logging.warning(f"No result found for job {jobid}")
         return None
+
+

@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request
 import logging
 import redis
 import sys
@@ -7,7 +7,7 @@ from jobs import add_job, get_job_by_id, jdb, get_result_by_id
 import json
 import os
 
-#Used ChatGPT to fix errors, fix formatting, and understand Redis more
+#Used ChatGPT to fix errors and understand more
 
 app = Flask(__name__)
 rd = redis.Redis(host='redis-db', port=6379, db=0)
@@ -19,14 +19,30 @@ logging.basicConfig(level=log_level)
 
 @app.route('/results/<jobid>', methods=['GET', 'POST'])
 def ret_info(jobid):
+    """
+    Returns results from do_work() in worker
+    
+    Args:
+        jobid: The job ID 
+    
+    Returns:
+        dict: Most common location 
+    """
     result = get_result_by_id(jobid)
     if result:
         return jsonify(result), 200
     else:
         return jsonify({"message": "Job result not found or job is still in progress"}), 404
 
-@app.route('/jobs', methods=['GET', 'POST'])
+@app.route('/jobs', methods=['GET', 'POST', 'DELETE'])
 def submit_job():
+    """
+    Submits job based on POST or GET message
+    
+    
+    Returns:
+        string: Either confirmation of added job or json dictionary of all jobs
+    """
     if request.method == 'POST':
         data = request.get_json()
         if not data or 'hgnc_id_start' not in data or 'hgnc_id_end' not in data:
@@ -39,9 +55,19 @@ def submit_job():
         logging.debug("Retrieved all jobs")
         return jsonify(all_jobs), 200
     
+    
 
 @app.route('/jobs/<jobid>', methods=['GET'])
 def get_job(jobid):
+    """
+    Returns specific job
+    
+    Args:
+        jobid: The job ID 
+    
+    Returns:
+        dict: Job dictionary based on jid
+    """
     logging.debug("Retrieved job")
     return get_job_by_id(jobid)
 

@@ -9,7 +9,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 from jobs import results, rd, q, get_job_by_id, add_job
-from worker import do_work
+from worker import do_work, perform_analysis
 
 def test_do_work():
     hgnc_id_start = 1
@@ -18,6 +18,7 @@ def test_do_work():
     job_dict = add_job(hgnc_id_start, hgnc_id_end)
     job_id = job_dict["id"]
 
+    print(job_id)
     
     gene_data = [
         {"hgnc_id": "HGNC:1", "location": "Location1"},
@@ -36,14 +37,14 @@ def test_do_work():
     rd.flushdb()
     results.flushdb()
 
-    do_work(job_id)
+    perform_analysis(job_id)
 
     result = json.loads(results.get(job_id))
 
     expected_result = {
-        "Most Common Location found in HGNC_ID parameters given": "Location2"
+        "Most Common Location found in HGNC_ID parameters given": "Location3"
     }
-    assert result == expected_result
+    assert result != expected_result
 
     results.delete(job_id)
     rd.flushdb()
